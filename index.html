@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Certificados em Massa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Gerador de Certificados</h1>
+        <p class="subtitulo">Envie seus arquivos e receba todos os certificados em um único ZIP</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data" id="form-certificados">
+            <div class="campo">
+                <label for="planilha">📊 Planilha de Participantes (.xlsx)</label>
+                <input type="file" name="planilha" id="planilha" accept=".xlsx" required>
+                <p class="info">Colunas obrigatórias: Nome, Curso, Carga Horaria, Data</p>
+            </div>
+
+            <div class="campo">
+                <label for="template">🖼️ Template do Certificado (.png)</label>
+                <input type="file" name="template" id="template" accept=".png" required>
+            </div>
+
+            <div class="campo">
+                <label for="fonte">🔤 Fonte para o texto (.ttf)</label>
+                <input type="file" name="fonte" id="fonte" accept=".ttf" required>
+                <p class="info">Ex: arial.ttf (encontrada em C:\Windows\Fonts)</p>
+            </div>
+
+            <button type="submit" id="btn-gerar">🚀 Gerar Certificados e Baixar ZIP</button>
+        </form>
+
+        <p class="rodape">Seus arquivos não são armazenados — tudo é processado em memória.</p>
+    </div>
+
+    <script>
+        // Bloqueia o botão e mostra mensagem ao enviar
+        document.getElementById('form-certificados').addEventListener('submit', function() {
+            const btn = document.getElementById('btn-gerar');
+            btn.disabled = true;
+            btn.textContent = '⏳ Gerando certificados... (aguarde)';
+        });
+    </script>
+</body>
+</html>
